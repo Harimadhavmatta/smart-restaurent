@@ -1,0 +1,3 @@
+order_id,ITEM_ID,table_number,Quantity,date,time,status,bill
+J6NSLW5X,ITEM_6,A12,3,2024-12-29,10:13:14.972562,in-progress,1800
+QW4AY8M7,ITEM_6,A12,6,2024-12-29,10:32:18.651897,in-progress,3600

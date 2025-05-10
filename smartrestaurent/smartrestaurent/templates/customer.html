@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f9fc;
+            color: #333;
+            text-align: center;
+        }
+
+        header {
+            background-color: #0078D7;
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        /* Button Container */
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px;
+        }
+
+        /* Button Styles */
+        button {
+            padding: 15px 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: white;
+            background-color: #0078D7;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            text-transform: uppercase;
+        }
+
+        button:hover {
+            background-color: #005bb5;
+            transform: scale(1.05);
+        }
+
+        button:active {
+            background-color: #003f7f;
+            transform: scale(1.02);
+        }
+
+        button:focus {
+            outline: none;
+            box-shadow: 0 0 5px #0078D7;
+        }
+
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .dropdown-content button {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            background-color: white;
+            border: none;
+            width: 100%;
+            text-align: left;
+            font-weight: normal;
+            text-transform: none;
+            border-radius: 0;
+        }
+
+        .dropdown-content button:hover {
+            background-color: #f1f1f1;
+            transform: none;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Textarea and Form Styles */
+        textarea {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            padding: 10px;
+            font-size: 1rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.5;
+            color: #333;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            resize: vertical;
+            margin-bottom: 20px;
+        }
+        
+        textarea:focus {
+            border-color: #0078D7;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 120, 215, 0.5);
+            background-color: #fff;
+        }
+
+        .input-container {
+            margin: 20px auto;
+            max-width: 850px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Filter Styles */
+        .filter-section {
+            width: 100%;
+            margin: 25px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .filter-group {
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            text-align: left;
+        }
+
+        .filter-group h3 {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+        }
+
+        .wanted-group h3 {
+            color: #27ae60;
+        }
+
+        .wanted-group h3::before {
+            content: '';
+            width: 6px;
+            height: 18px;
+            background-color: #27ae60;
+            display: inline-block;
+            border-radius: 3px;
+        }
+
+        .not-wanted-group h3 {
+            color: #e74c3c;
+        }
+
+        .not-wanted-group h3::before {
+            content: '';
+            width: 6px;
+            height: 18px;
+            background-color: #e74c3c;
+            display: inline-block;
+            border-radius: 3px;
+        }
+
+        .input-container input[type="text"] {
+            width: 100%;
+            padding: 10px 15px;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            transition: all 0.3s;
+            margin-bottom: 10px;
+        }
+
+        .input-container input[type="text"]:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .wanted-group input:focus {
+            border-color: #27ae60;
+            box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.2);
+        }
+
+        .not-wanted-group input:focus {
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
+        }
+
+        .list-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            min-height: 30px;
+        }
+
+        .list-item {
+            display: flex;
+            align-items: center;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            gap: 8px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .wanted-group .list-item {
+            background-color: #e1f5e9;
+            color: #27ae60;
+            border: 1px solid #c3e6d1;
+        }
+
+        .not-wanted-group .list-item {
+            background-color: #fae5e5;
+            color: #e74c3c;
+            border: 1px solid #f5c1c1;
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            padding: 0;
+            transition: all 0.2s;
+        }
+
+        .wanted-group .delete-btn:hover {
+            background-color: #c3e6d1;
+        }
+
+        .not-wanted-group .delete-btn:hover {
+            background-color: #f5c1c1;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .section-title {
+            width: 100%;
+            text-align: left;
+            font-size: 1.3rem;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .section-description {
+            width: 100%;
+            text-align: left;
+            color: #7f8c8d;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            button {
+                font-size: 0.9rem;
+                padding: 10px 20px;
+            }
+            
+            .input-container {
+                padding: 15px;
+                margin: 15px;
+            }
+            
+            .filter-group {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Customer Dashboard</h1>
+    </header>
+
+    <div class="button-container">
+        <!-- Recommendation Dropdown Menu -->
+        <div class="dropdown">
+            <button>Get Recommendation</button>
+            <div class="dropdown-content">
+                <button onclick="showForm('filter-recommendation-form')">Filter-Based Recommendation</button>
+                <button onclick="showForm('context-recommendation-form')">Context-Based Recommendation</button>
+            </div>
+        </div>
+        
+        <!-- Menu Button -->
+        <button onclick="location.href='/menu'">Menu</button>
+    </div>
+
+    <!-- Filter-Based Recommendation Form -->
+    <div id="filter-recommendation-form" class="input-container" style="display:none;">
+        <h3>Filter-Based Meal Recommendation</h3>
+        
+        <div class="section-title">Dietary Preferences and Restrictions</div>
+        <div class="section-description">Use the filters below to specify your dietary preferences.</div>
+        
+        <div class="filter-section">
+            <div class="filter-group wanted-group">
+                <h3>Wanted Ingredients</h3>
+                <input type="text" id="wantedInput" placeholder="Type an ingredient and press Enter (e.g., chicken, tomato)">
+                <div class="list-container" id="wantedList"></div>
+            </div>
+            
+            <div class="filter-group not-wanted-group">
+                <h3>Not Wanted Ingredients</h3>
+                <input type="text" id="notWantedInput" placeholder="Type an ingredient to exclude and press Enter (e.g., nuts, dairy)">
+                <div class="list-container" id="notWantedList"></div>
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <button onclick="submitFilterRecommendation()">Get Recommendations</button>
+            <button onclick="hideAllForms()">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Context-Based Recommendation Form -->
+    <div id="context-recommendation-form" class="input-container" style="display:none;">
+        <h3>Context-Based Meal Recommendation</h3>
+        
+        <div class="section-title">Describe Your Preferences</div>
+        <div class="section-description">Describe your preferences, dietary needs, or special requests in detail.</div>
+        
+        <textarea id="context-input" name="context-input" rows="6" placeholder="Tell us what you're looking for. For example: 'I'm looking for a light lunch option that's high in protein but low in carbs. I prefer seafood and vegetables, but I'm allergic to shellfish.'"></textarea>
+        
+        <div class="form-actions">
+            <button onclick="submitContextRecommendation()">Get Recommendations</button>
+            <button onclick="hideAllForms()">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        // Default ingredient preferences - fallback if fetch fails
+        const defaultPreferences = {
+            wanted: ["chicken", "rice", "vegetables"],
+            notWanted: ["peanuts", "shellfish"]
+        };
+        
+        // Load default items when the page is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fetch the preferences from JSON file
+            fetch('/static/preferences.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Load both wanted and notWanted items from the fetched data
+                    loadDefaultItems(data.wanted, data.notWanted);
+                })
+                .catch(error => {
+                    console.error('Error fetching preferences:', error);
+                    // Fallback to hardcoded defaults if fetch fails
+                    loadDefaultItems(defaultPreferences.wanted, defaultPreferences.notWanted);
+                });
+            
+            // Add event listeners for input fields
+            document.getElementById("wantedInput").addEventListener("keypress", function(event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    addItem("wantedInput", "wantedList", true);
+                }
+            });
+            
+            document.getElementById("notWantedInput").addEventListener("keypress", function(event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    addItem("notWantedInput", "notWantedList", false);
+                }
+            });
+        });
+        
+        // Function to show specific form
+        function showForm(formId) {
+            // Hide all forms first
+            hideAllForms();
+            
+            // Show the requested form
+            document.getElementById(formId).style.display = 'block';
+        }
+        
+        // Function to hide all forms
+        function hideAllForms() {
+            document.getElementById('filter-recommendation-form').style.display = 'none';
+            document.getElementById('context-recommendation-form').style.display = 'none';
+        }
+        
+        // Load default items into the lists
+        function loadDefaultItems(wantedItems, notWantedItems) {
+            const wantedList = document.getElementById("wantedList");
+            const notWantedList = document.getElementById("notWantedList");
+            
+            // Clear existing items
+            wantedList.innerHTML = "";
+            notWantedList.innerHTML = "";
+            
+            // Add wanted items
+            wantedItems.forEach(item => {
+                createItemElement(item, wantedList, true);
+            });
+            
+            // Add not wanted items
+            notWantedItems.forEach(item => {
+                createItemElement(item, notWantedList, false);
+            });
+        }
+        
+        // Create a single item element
+        function createItemElement(value, list, isWanted) {
+            const item = document.createElement("div");
+            item.className = "list-item";
+            item.textContent = value;
+            
+            // Create the delete button
+            const deleteBtn = document.createElement("button");
+            deleteBtn.className = "delete-btn";
+            deleteBtn.textContent = "×";
+            deleteBtn.onclick = function(event) {
+                event.preventDefault();
+                list.removeChild(item);
+            };
+            
+            item.appendChild(deleteBtn);
+            list.appendChild(item);
+        }
+        
+        // Add new item to list
+        function addItem(inputId, listId, isWanted) {
+            const input = document.getElementById(inputId);
+            const list = document.getElementById(listId);
+            const value = input.value.trim();
+            
+            if (value === "") return; // Ignore empty values
+            
+            createItemElement(value, list, isWanted);
+            input.value = ""; // Clear input
+            input.focus(); // Keep focus on input field
+        }
+        
+        // Submit the filter-based recommendation form
+        function submitFilterRecommendation() {
+            // Get wanted and not wanted items
+            const wantedItems = Array.from(document.getElementById("wantedList").children)
+                .map(item => item.textContent.replace("×", "").trim());
+            
+            const notWantedItems = Array.from(document.getElementById("notWantedList").children)
+                .map(item => item.textContent.replace("×", "").trim());
+            
+            // Combine all data
+            const data = {
+                wanted: wantedItems,
+                not_wanted: notWantedItems
+            };
+            
+            console.log("Sending filter data:", data);
+            
+            // Send the POST request to filtered_recommendations route
+            fetch('/filtered_recommendations', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Response:", data);
+                localStorage.setItem('recommendationData', JSON.stringify(data));
+                window.location.href = '/recommended';
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert("Error processing Filter recommendation.");
+            });
+        }
+        
+        // Submit the context-based recommendation form
+        function submitContextRecommendation() {
+            // Get context
+            const context = document.getElementById("context-input").value;
+            
+            // Combine all data
+            const data = {
+                type: "context-based",
+                context: context
+            };
+            
+            console.log("Sending context-based data:", data);
+            
+            // Send the POST request
+            fetch('/process', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Response:", data);
+                localStorage.setItem('recommendationData', JSON.stringify(data));
+                window.location.href = '/recommended';
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert("Error processing context recommendations.");
+            });
+        }
+    </script>
+</body>
+</html>

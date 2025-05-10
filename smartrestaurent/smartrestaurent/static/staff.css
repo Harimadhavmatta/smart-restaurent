@@ -1,0 +1,202 @@
+/* Set up basic styles and variables */
+:root {
+    --primary: #3498db;
+    --primary-dark: #2980b9;
+    --secondary: #2c3e50;
+    --light-gray: #ecf0f1;
+    --dark-gray: #7f8c8d;
+    --success: #2ecc71;
+    --danger: #e74c3c;
+    --font-main: 'Segoe UI', Roboto, sans-serif;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+  }
+  
+  /* Basic Reset */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: var(--font-main);
+    line-height: 1.6;
+    color: var(--secondary);
+    background-color: #f9f9f9;
+    padding: 20px;
+  }
+  
+  /* Header Styling */
+  header {
+    background-color: var(--primary);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow);
+  }
+  
+  h1 {
+    font-size: 2.2rem;
+    text-align: center;
+  }
+  
+  h3 {
+    margin-bottom: 1rem;
+    color: var(--secondary);
+  }
+  
+  /* Button Container */
+  .button-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 2rem;
+  }
+  
+  button {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 12px 20px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+  }
+  
+  button:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  button[type="submit"] {
+    background-color: var(--success);
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #27ae60;
+  }
+  
+  button[type="button"] {
+    background-color: var(--dark-gray);
+  }
+  
+  button[type="button"]:hover {
+    background-color: #6c7a89;
+  }
+  
+  /* Input Containers */
+  .input-container {
+    background-color: white;
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: var(--secondary);
+  }
+  
+  input[type="text"],
+  input[type="number"] {
+    padding: 10px;
+    margin-bottom: 16px;
+    border: 1px solid var(--light-gray);
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: var(--transition);
+  }
+  
+  input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+  }
+  
+  /* Form Buttons */
+  form button {
+    margin-top: 10px;
+  }
+  
+  form button[type="submit"] {
+    background-color: var(--success);
+  }
+  
+  form button[type="button"] {
+    background-color: var(--danger);
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .button-container {
+      grid-template-columns: 1fr;
+    }
+    
+    .input-container {
+      padding: 1.5rem;
+    }
+    
+    h1 {
+      font-size: 1.8rem;
+    }
+  }
+  
+  /* Animation for form appearance */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  #add-dish-form, #remove-dish-form, #place-order-form, #remove-order-form, #Billing {
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  /* Table styling for menu and orders pages */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 2rem;
+    box-shadow: var(--shadow);
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--light-gray);
+  }
+  
+  th {
+    background-color: var(--primary);
+    color: white;
+    font-weight: 500;
+  }
+  
+  tr:last-child td {
+    border-bottom: none;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  tr:hover {
+    background-color: #f1f1f1;
+  }

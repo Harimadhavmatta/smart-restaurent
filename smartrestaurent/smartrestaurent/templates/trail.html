@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Restaurant API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        #output {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            display: none;
+        }
+        #output table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        #output th, #output td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Smart Restaurant Context Input</h1>
+    <form id="contextForm">
+        <label for="context">Enter Context:</label><br>
+        <textarea id="context" name="context" rows="8" cols="50" placeholder="Enter the context here..."></textarea><br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="output">
+        <h2>Filtered Data (df1_filtered)</h2>
+        <table id="resultTable">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Information</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <script>
+        // Handle form submission
+        document.getElementById("contextForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const context = document.getElementById("context").value;
+
+            // Show loading state
+            document.getElementById("output").style.display = "none";
+
+            // Make POST request to the Flask API
+            fetch('http://127.0.0.1:5000/process', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ context: context }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Handle response and display data
+                displayResults(data);
+            })
+            .catch(error => {
+                alert('Error: ' + error);
+            });
+        });
+
+        // Function to display results in a table
+        function displayResults(data) {
+            const tableBody = document.getElementById("resultTable").querySelector("tbody");
+            tableBody.innerHTML = "";  // Clear any existing rows
+
+            if (data.length === 0) {
+                tableBody.innerHTML = "<tr><td colspan='2'>No matching records found.</td></tr>";
+            } else {
+                data.forEach(row => {
+                    const tr = document.createElement("tr");
+                    tr.innerHTML = `<td>${row.title}</td><td>${row.information.join(", ")}</td>`;
+                    tableBody.appendChild(tr);
+                });
+            }
+
+            // Show the results table
+            document.getElementById("output").style.display = "block";
+        }
+    </script>
+</body>
+</html>

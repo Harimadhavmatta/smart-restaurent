@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommended Meals</title>
+    <style>
+        /* Copy the relevant styles from your original HTML */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f9fc;
+            color: #333;
+            text-align: center;
+        }
+
+        header {
+            background-color: #0078D7;
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .recommendation-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .filter-summary {
+            margin-bottom: 20px;
+            text-align: left;
+            padding: 15px;
+            background-color: #f0f5ff;
+            border-radius: 8px;
+        }
+
+        .filter-list {
+            display: inline-flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 5px 0;
+        }
+
+        .filter-item {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .wanted-item {
+            background-color: #e1f5e9;
+            color: #27ae60;
+            border: 1px solid #c3e6d1;
+        }
+
+        .not-wanted-item {
+            background-color: #fae5e5;
+            color: #e74c3c;
+            border: 1px solid #f5c1c1;
+        }
+
+        .recommendation {
+            text-align: left;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            border-left: 4px solid #0078D7;
+        }
+
+        .recommendation h3 {
+            margin-top: 0;
+            color: #0078D7;
+        }
+
+        .ingredients {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 1rem;
+            color: white;
+            background-color: #0078D7;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #005bb5;
+        }
+
+        .empty-state {
+            padding: 40px;
+            text-align: center;
+            color: #777;
+        }
+
+        /* New styles for table display */
+        .recommendations-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .recommendations-table th {
+            background-color: #0078D7;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .recommendations-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .recommendations-table tr:hover {
+            background-color: #e6f2ff;
+        }
+
+        .recommendations-table td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(0,120,215,0.3);
+            border-radius: 50%;
+            border-top-color: #0078D7;
+            animation: spin 1s ease-in-out infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Recommended Meals</h1>
+    </header>
+
+    <div class="container">
+        <div class="recommendation-container">
+            <div class="filter-summary">
+                <h2>Your Preferences</h2>
+                <div>
+                    <strong>Wanted Ingredients:</strong>
+                    <div class="filter-list" id="wanted-summary"></div>
+                </div>
+                <div>
+                    <strong>Not Wanted Ingredients:</strong>
+                    <div class="filter-list" id="not-wanted-summary"></div>
+                </div>
+            </div>
+
+            <h2>Recommendations</h2>
+            <div id="recommendations-list">
+                <div class="loading"></div>
+            </div>
+        </div>
+
+        <button onclick="window.location.href='/'">Back to Dashboard</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get recommendation preferences from localStorage
+            const recommendationData = JSON.parse(localStorage.getItem('recommendationData')) || {
+                wanted: [],
+                not_wanted: []
+            };
+            
+            // Display wanted ingredients
+            const wantedList = document.getElementById('wanted-summary');
+            if (recommendationData.wanted && recommendationData.wanted.length > 0) {
+                recommendationData.wanted.forEach(item => {
+                    const itemEl = document.createElement('span');
+                    itemEl.className = 'filter-item wanted-item';
+                    itemEl.textContent = item;
+                    wantedList.appendChild(itemEl);
+                });
+            } else {
+                wantedList.innerHTML = '<span>None specified</span>';
+            }
+            
+            // Display not wanted ingredients
+            const notWantedList = document.getElementById('not-wanted-summary');
+            if (recommendationData.not_wanted && recommendationData.not_wanted.length > 0) {
+                recommendationData.not_wanted.forEach(item => {
+                    const itemEl = document.createElement('span');
+                    itemEl.className = 'filter-item not-wanted-item';
+                    itemEl.textContent = item;
+                    notWantedList.appendChild(itemEl);
+                });
+            } else {
+                notWantedList.innerHTML = '<span>None specified</span>';
+            }
+            
+            // Fetch CSV data and display as table
+            fetchCSVAndDisplay();
+        });
+
+        // Function to fetch CSV and display as table
+        function fetchCSVAndDisplay() {
+            // First try to fetch from CSV file
+            fetch('../recommended.csv')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch recommendations data');
+                    }
+                    return response.text();
+                })
+                .then(csvText => {
+                    // Parse CSV
+                    const recommendations = parseCSV(csvText);
+                    displayRecommendationsTable(recommendations);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // If fetch fails, fall back to hardcoded data
+                    console.log('Falling back to hardcoded data');
+                    const hardcodedData = [
+                        {
+                            name: "Grilled Chicken Salad",
+                            category: "Healthy",
+                            ingredients: ["chicken breast", "lettuce", "tomatoes", "cucumber", "olive oil"],
+                            calories: "320"
+                        },
+                        {
+                            name: "Vegetable Stir Fry",
+                            category: "Asian",
+                            ingredients: ["tofu", "broccoli", "carrots", "bell peppers", "soy sauce"],
+                            calories: "280"
+                        },
+                        {
+                            name: "Pasta Primavera",
+                            category: "Italian",
+                            ingredients: ["pasta", "zucchini", "tomatoes", "bell peppers", "parmesan"],
+                            calories: "450"
+                        },
+                        {
+                            name: "Black Bean Burrito",
+                            category: "Mexican",
+                            ingredients: ["black beans", "rice", "tortilla", "avocado", "salsa"],
+                            calories: "520"
+                        }
+                    ];
+                    displayRecommendationsTable(hardcodedData);
+                });
+        }
+    </script>
+</body>
+</html>

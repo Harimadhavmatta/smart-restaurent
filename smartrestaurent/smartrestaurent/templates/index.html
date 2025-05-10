@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Landing Page</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('static/images/Home.png');
+            /* Replace with your image path */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #fff;
+        }
+
+        .content-container {
+            background-color: yellow;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .button-container a {
+            text-decoration: none;
+            padding: 15px 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #fff;
+            background-color: rgba(0, 123, 255, 0.8);
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            text-align: center;
+            width: 150px;
+        }
+
+        .button-container a:hover {
+            background-color: rgba(0, 86, 179, 0.8);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="content-container">
+        <div class="logo">Macro Morsel</div>
+        <div class="button-container">
+            <a href="{{ url_for('staff') }}">Staff</a>
+            <a href="{{ url_for('customer') }}">Customer</a>
+        </div>
+
+    </div>
+</body>
+
+</html>

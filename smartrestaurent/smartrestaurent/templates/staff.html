@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='staff.css') }}">
+    <style>
+        /* Include your previous styles here */
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Staff Dashboard</h1>
+    </header>
+
+    <div class="button-container">
+        <button onclick="document.getElementById('add-dish-form').style.display='block'">Add Dish</button>
+        <button onclick="document.getElementById('remove-dish-form').style.display='block'">Remove Dish</button>
+        <button onclick="document.getElementById('place-order-form').style.display='block'">Place Order</button>
+        <button onclick="document.getElementById('remove-order-form').style.display='block'">Remove Order</button>
+        <button onclick="document.getElementById('Billing').style.display='block'">Billing</button>
+        <button onclick="location.href='/menu'">Menu</button>
+        <button onclick="location.href='/orders'">Orders</button>
+    </div>
+    <!-- billing -->
+    <div id="Billing" class="input-container">
+        <form action="/billing" method="POST">
+            <h3>Billing</h3>
+            <label for="Table_number">Table Number</label>
+            <input type="text" id="Table_number" name="Table_number" required><br>
+            <label for="tip">Tip</label>
+            <input type="number" id="tip" name="tip" required><br>
+            <button type="submit">Generate</button>
+            <button type="button" onclick="document.getElementById('Billing').style.display='none'">Cancel</button>
+        </form>
+    </div>
+
+    <!-- Add Dish Form -->
+    <div id="add-dish-form" class="input-container" style="display:none;">
+        <form action="/add_dish" method="POST">
+            <h3>Add Dish</h3>
+            <label for="item-id">Item ID</label>
+            <input type="text" id="item-id" name="item-id" required><br>
+
+            <label for="title">Dish Title</label>
+            <input type="text" id="title" name="title" required><br>
+
+            <label for="ingredients">Ingredients</label>
+            <input type="text" id="ingredients" name="ingredients" required><br>
+
+            <label for="nutrition-info">Nutrition Info</label>
+            <input type="text" id="nutrition-info" name="nutrition-info" required><br>
+
+            <label for="micros-macros">Micros and Macros</label>
+            <input type="text" id="micros-macros" name="micros-macros" required><br>
+
+            <label for="price">price</label>
+            <input type="number" id="price" name="price" required><br>
+
+            <label for="information">information</label>
+            <input type="text" id="information" name="information" required><br>
+
+            <label for="country_of_origin">country_of_origin</label>
+            <input type="text" id="country_of_origin" name="country_of_origin" required><br>
+
+            <button type="submit">Submit</button>
+            <button type="button"
+                onclick="document.getElementById('add-dish-form').style.display='none'">Cancel</button>
+        </form>
+    </div>
+
+    <!-- Remove Dish Form -->
+    <div id="remove-dish-form" class="input-container" style="display:none;">
+        <form action="/remove_dish" method="POST">
+            <h3>Remove Dish</h3>
+            <label for="remove-item-id">Item ID</label>
+            <input type="text" id="remove-item-id" name="remove-item-id" required><br>
+
+            <button type="submit">Remove</button>
+            <button type="button"
+                onclick="document.getElementById('remove-dish-form').style.display='none'">Cancel</button>
+        </form>
+    </div>
+    <!-- Remove Order Form -->
+    <div id="remove-order-form" class="input-container" style="display:none;">
+        <form action="/remove_order" method="POST">
+            <h3>Remove Order</h3>
+            <label for="remove-order-id">Order ID</label>
+            <input type="text" id="remove-order-id" name="remove-order-id" required><br>
+
+            <button type="submit">Remove Order</button>
+            <button type="button"
+                onclick="document.getElementById('remove-order-form').style.display='none'">Cancel</button>
+        </form>
+    </div>
+
+
+    <!-- Place Order Form -->
+    <div id="place-order-form" class="input-container" style="display:none;">
+        <form action="/place_order" method="POST">
+            <h3>Place Order</h3>
+            <label for="order-item-id">Item ID</label>
+            <input type="text" id="order-item-id" name="order-item-id" required><br>
+
+            <label for="table-number">Table Number</label>
+            <input type="text" id="table-number" name="table-number" required><br>
+
+            <label for="quantity">Quantity</label>
+            <input type="number" id="quantity" name="quantity" min="1" required><br>
+
+            <button type="submit">Place Order</button>
+            <button type="button"
+                onclick="document.getElementById('place-order-form').style.display='none'">Cancel</button>
+        </form>
+    </div>
+</body>
+
+</html>
